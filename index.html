@@ -25,20 +25,20 @@
     <h1>Interactive Flowcharts for our pipelines</h1>
     <h2>Pipelines: MixedPreprocessing, EG, tREX </h2>
 
-    <li>Red nodes: correspond to tasks in the pipeline. You can click on them for more information on the task.</li>
-    <li>Blue nodes: outputs of the preceding tasks</li>
+    <li>Red nodes: correspond to tasks in the pipeline. You can click on them for more information.</li>
+    <li>Blue nodes: outputs of the preceding tasks.</li>
 
     <h3>Mixed Preprocessing</h3>
     <p>This pipeline processes ALL samples together: genome, exome, research and targeted NGS samples. Samples are processed on 25B Illumina flowcells on the Novaseq X Plus. This preprocessing pipeline takes the raw BCL outputs and converts them to FASTQs, ready for downstream processing by the EG and tREX pipelines. MultiQC reports are also produced. </p>
     <div class="mermaid">
         graph TD
-            Inputs["Inputs: project ID and directory, docker image<br>Optional inputs: mode, branch"]:::linked-->findFiles["Find files from runproject<br>(ID & directory)"]:::linked-->fastqArrays["Arrays of all: <br>WGS FASTQs & FastQCs <br>trEXome FASTQs & FastQCs"]-->checkProject:::linked-->multiQC:::linked
+            Inputs["Inputs: project ID and directory, docker image<br>Optional inputs: mode, branch"]:::linked-->findFiles["Find files from runproject<br>(ID & directory)"]:::linked-->fastqArrays["Arrays of: <br>WGS FASTQs & FastQCs <br>trEXome FASTQs & FastQCs"]-->checkProject["Check project"]:::linked-->type["If genome sample, select genome MultiQC<br> If tREX/Exome, select exome MultiQC"]-->multiQC:::linked
 
             classDef default fill:#000,stroke:#4499bb,stroke-width:2px,color:#FFF;
             classDef linked fill:#040404,stroke:#cc6666,stroke-width:2px;
 
             click SpecialChars "info/node1.html" "Link to list and codes of special characters e.g. emojis"
-            
+
     </div>
 
 </body>
