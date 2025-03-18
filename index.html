@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mermaid Flowchart with Clickable Node</title>
+    <title>Pipeline Flowcharts</title>
     <script type="module">
         // Load Mermaid.js (via CDN)
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -11,7 +11,7 @@
         mermaid.initialize({ startOnLoad: true });
     </script>
     <style>
-        /* Optional styling for the flowchart */
+        /* styling for flowchart */
         .mermaid {
             display: flex;
             justify-content: center;
@@ -22,11 +22,17 @@
 </head>
 <body>
 
-    <h1>Interactive Flowcharts for our pipelines</h1>
+    <h1>Interactive Flowcharts for EGL Pipelines</h1>
     <h2>Pipelines: MixedPreprocessing, EG, tREX </h2>
 
-    <li>Red nodes: correspond to tasks in the pipeline. You can click on them for more information.</li>
+    <li>Red nodes: tasks in the pipeline. You can click on them for more information.</li>
     <li>Blue nodes: outputs of the preceding tasks.</li>
+
+    <p>This site serves as a learning resource for bioinformatics STPs who want to better understand how pipelines operate at Exeter Genomics Laboratory. It provides written explanations, making it easier to follow compared to navigating through extensive code. </p>
+
+    <p>When using this site for learning, I recommend referencing the corresponding workflow in GitHub at the same time. </p>
+    
+    <p>Each pipeline starts with an import section, which can help you quickly locate the relevant part of the GitHub repo. To do this, simply copy the relative path from the import section and paste it into your browser as part of the full GitHub repo URL. </p>
 
     <h3>Mixed Preprocessing</h3>
     <p>This pipeline processes ALL samples together: genome, exome, research and targeted NGS samples. Samples are processed on 25B Illumina flowcells on the Novaseq X Plus. This preprocessing pipeline takes the raw BCL outputs and converts them to FASTQs, ready for downstream processing by the EG and tREX pipelines. MultiQC reports are also produced. </p>
@@ -34,9 +40,9 @@
         graph TD
         Inputs["Inputs: project ID and directory, docker image<br>Optional inputs: mode, branch"]:::linked-->findFiles["Find files from runproject<br>(ID & directory)"]:::linked-->fastqArrays["Arrays of: <br>WGS FASTQs & FastQCs <br>trEXome FASTQs & FastQCs"]-->checkProject["Check project"]:::linked-->type["If sample is whole genome, select genome MultiQC<br> If tREX/Exome, select exome MultiQC"]
         
-        checkProject["Check project"]:::linked-->compile["Compile workflow in DNAnexus"]:::linked-->Update["Update sample details"]:::linked-->Setup["Set up batch<br>"]:::linked-->if[if exome or genome, scatter families<br>if tREX, no scattering applied]-->run["Run workflow"]:::linked-->multiqcf["collect multiqcZipFinal"]-->report["Generate MultiQC report + run metrics"]
+        checkProject["Check project"]:::linked-->compile["Compile workflow in DNAnexus"]:::linked-->Update["Update sample details"]:::linked-->Setup["Set up batch<br>"]:::linked-->if[if exome or genome, scatter families<br>if tREX, no scattering applied]-->run["Run workflow"]:::linked-->multiqcf["collect multiqcZipFinal"]-->report["Generate MultiQC report + run metrics"]:::linked
 
-        type["If sample is whole genome, select genome MultiQC<br> If tREX/Exome, select exome MultiQC"]-->multiQC:::linked-->report["Generate MultiQC report + run metrics"]
+        type["If sample is whole genome, select genome MultiQC<br> If tREX/Exome, select exome MultiQC"]-->multiQC:::linked-->report["Generate MultiQC report + run metrics"]:::linked
             
 
         classDef default fill:#000,stroke:#4499bb,stroke-width:2px,color:#FFF;
