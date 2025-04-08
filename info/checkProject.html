@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>checkProject</title>
+</head>
+<body>
+
+    <h1>Check Project</h1>
+    <p>This script determines whether sequencing data is WGS (whole genome) or TRExome (targeted exomes). The information will be used later to guide downstream analysis.</p>
+
+    <h4>Inputs:</h4>
+    <p>
+        Run project ID and run directory (the ID for the sequencing data, and directory where the data is stored in DNAnexus).
+    </p>
+
+    <h4>Two files are fetched from DNAnexus:</h4>
+    <ul>
+        <li><code>SampleSheet.csv</code> - sample metadata</li>
+        <li><code>SampleInfo.tsv</code> - detailed sample information</li>
+    </ul>
+
+    <h4>Classifying Samples:</h4>
+    <ol>
+        <li>Check sample sheet version: we have two versions of our sample sheet (2 is the new version) and these are formatted slightly differently.</li> <br>
+        <li>Extract and organise sample data:
+            <ul>
+                <li>The first few lines (header) of <code>SampleSheet.csv</code> are extracted and copied into three new files:
+                    <ul>
+                        <li><strong><code>SampleSheet_trex.csv</code></strong> (for TRExome samples)</li>
+                        <li><strong><code>SampleSheet_exome.csv</code></strong> (for Exome samples)</li>
+                        <li><strong><code>SampleSheet_genome.csv</code></strong> (for Genome samples)</li>
+                    </ul>
+                </li><br>
+                <li>The script <strong>then appends the correct sample-specific data to each file</strong> based on information in <code>SampleInfo.tsv</code>:
+                    <ul>
+                        <li><strong>TRExome samples</strong> are identified by having <code>MONO_</code> or <code>DIAG_</code> in <code>SampleInfo.tsv</code></li>
+                        <li><strong>Genome samples</strong> are identified if their sample names start with <code>WGS_</code></li>
+                        <li><strong>Exome samples</strong> are identified if they do <strong>not</strong> match the TREX or Genome categories and start with <code>TwEx2</code>.</li>
+                    </ul>
+                </li><br>
+                <li>Some samples require further filtering based on R-codes:
+                    <ul>
+                        <li><a href="https://www.exeterlaboratory.com/genetics/genome-sequencing/">R14</a>, <a href="https://www.salisbury.nhs.uk/media/goilrxec/clinicianguidetogmsv2_nov-2021.pdf">R89</a>, <a href="https://www.england.nhs.uk/wp-content/uploads/2018/08/rare-and-inherited-disease-eligibility-criteria-v2.pdf">R312</a> and research samples are added to <code>SampleInfo_eg.tsv</code></li>
+                        <li>All other TRExome samples are added to <code>SampleInfo_trex.tsv</code>.</li>
+                    </ul>
+                </li><br>
+            </ul>
+        </li>
+    </ol>
+
+    <h4>Checking Sample Type:</h4>
+    <p>After samples have been sorted into sample sheets, the number of lines on sample sheets are counted. <br> If a sample sheet isn't empty (i.e. contains data and not just headers), a Boolean text file is created to confirm that samples are present. (e.g. <code>runTrex.txt</code> is created <i>if</i> TREXome samples are present). <br> These files are important because their presence guides future steps in the pipeline. (e.g. if <code>runTrex.txt</code> is true, then do this)</p>
+
+<a href="../index.html">Back to Flowchart</a>
+</body>
+</html>

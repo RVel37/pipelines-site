@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inputs</title>
+</head>
+<body>
+    <h1>Inputs</h1>
+    <p>The inputs for this pipeline are as follows:</p>
+    <ul>
+        <li>Run project ID</li>
+        <li>Run directory <br>
+            <ul>
+                <li>All projects (samples or families) are assigned a run project ID and their own directory. This is where all outputs for that particular sample are going to end up. This can be looked up in DNAnexus after within the right main directory (genomes/exomes/targeted > data > families/projects)</li>
+            </ul>
+        </li>
+        <li>Docker images; one for MultiQC, and one for run metrics. <br>
+            <ul>
+                <li>
+                    <a href="https://www.docker.com/" target="_blank">Docker</a> is a tool that helps you package applications and their dependencies into a container. You can think of a container as a small, self-contained environment where your application can run without being affected by or affecting other programs on your computer. This is important because it ensures the pipeline will work the same way no matter where it is run, regardless of the machine or OS.
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Optional inputs</h2>
+    <ul>
+        <li>Mode: live, develop, or validation. Live by default.
+            <ul>
+                <li>Develop: Files are moved to the development project on DNAnexus.</li>
+                <li>Validation: Files are moved to the validation project on DNAnexus.</li>
+            </ul>
+        </li>
+        <li>Branch: Specifies which branch of the tREX/EG pipeline to clone during MixedPreprocessing. Main by default.
+            <ul>
+                <li>For example, if testing specific developments, you may change to another branch.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <a href="../index.html">Back to Flowchart</a>
+</body>
+</html>
