@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setupBatch</title>
+</head>
+<body>
+    <h1>Set up Batch/Set up Families</h1>
+
+    <p>Batches or families are set up based on the type of sequencing data (tREX/exome/genome), and prepared for analysis. Because exomes and genomes are run in trios, we handle these differently to tREX samples, which are run individually.</p>
+
+    <p>The task is run in an <code>if-else</code> loop:</p>
+    <ul>
+        <li><strong>tREX samples:</strong> Processed individually using <code>setupBatch</code> task.</li>
+        <li><strong>Exome and genome samples:</strong> Processed in trios (maternal, paternal, and proband samples) using <code>setupFamilies</code> task. Families are then <strong>scattered</strong> (i.e., each individual sample within the family is processed in parallel).</li>
+    </ul>
+
+    <p>The task produces a JSON per sample/family, containing each sample's FASTQ files and sample metadata (e.g., sequencing strategy, relationship status). It also sets up sample/family folders, which will be found in the <code>/data/</code> subdirectories on DNAnexus.</p>
+
+    <a href="../index.html">Back to Flowchart</a>
+</body>
+</html>

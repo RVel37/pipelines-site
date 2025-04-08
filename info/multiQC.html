@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>multiQC</title>
+</head>
+<body>
+
+    <h1>MultiQC</h1>
+
+    <p>MultiQC is a tool that aggregates results from various quality control sources (our individual FastQC results, demultiplexing statistics, and BCL Convert metrics) into a single comprehensive report for an entire batch. It generates an interactive HTML report along with a zip archive containing the underlying data.</p>
+
+    <p>The <code>MultiQC</code> task is executed within an <code>if-else</code> loop based on the output of the <code>checkProject</code> task. If the project is a genome, the <code>wgsMultiQC</code> task is run; otherwise, the <code>exomeMultiQC</code> task is executed. The primary difference between these tasks lies in the exome capture kit (retrieved from the <code>checkProject</code> task) and the configuration files used.</p>
+
+    <p>To learn more about MultiQC, visit the <a href="https://docs.seqera.io/multiqc" target="_blank">official documentation</a>. For an overview of DRAGEN's FastQC and MultiQC pipeline, <a href="https://emea.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/dragen-fastqc-multiqc.html" target="_blank">go here</a>.</p>
+
+    <a href="../index.html">Back to Flowchart</a>
+</body>
+</html>
