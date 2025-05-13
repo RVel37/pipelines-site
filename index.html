@@ -89,7 +89,7 @@
 <p>This pipeline processes all samples together: genomes, exomes, research and targeted NGS samples. <br> Samples are processed on 25B Illumina flowcells on the Novaseq X Plus. This preprocessing pipeline takes the raw BCL outputs and converts them to FASTQs, ready for downstream processing by the EG and tREX pipelines. MultiQC reports are also produced. </p>
 <div class="mermaid">
     graph TD
-    Inputs["Inputs: project ID and directory, docker image<br>Optional inputs: mode, branch"]:::linked-->findFiles["Find files from runproject<br>(ID & directory)"]:::linked-->fastqArrays["Arrays of: <br>WGS FASTQs & FastQCs <br>trEXome FASTQs & FastQCs"]-->checkProject["Check project"]:::linked-->type["If sample is whole genome, select genome MultiQC<br> If tREX/Exome, select exome MultiQC"]
+    Inputs["Inputs: project ID and directory, docker image<br>Optional inputs: mode, branch"]:::linked-->findFiles["Find files from runproject<br>(ID & directory)"]:::linked-->fastqArrays["Arrays of: <br>WGS FASTQs & FastQCs <br>trEXome FASTQs & FastQCs"]-->checkProject["Check project"]:::linked-->type["IF sample is whole genome, select genome MultiQC<br> IF tREX/Exome, select exome MultiQC"]
 
     click Inputs "../info/inputs.html"
     click findFiles "../info/findFiles.html"
@@ -98,7 +98,7 @@
     
     checkProject["Check project"]:::linked-->compile["Compile workflow in DNAnexus"]:::linked-->
     Update["Update sample details"]:::linked-->Setup["Set up batch<br>"]:::linked-->
-    if[if exome or genome, scatter families<br>if tREX, no scattering applied]-->
+    if[IF exome or genome, scatter families<br>IF tREX, no scattering applied]-->
     run["Run workflow"]:::linked-->
     multiqcf["collect multiqcZipFinal"]-->report["Generate MultiQC report + run metrics"]:::linked
 
@@ -107,7 +107,7 @@
     click Setup "../info/setupBatch.html"
     click run "../info/runWf.html"
 
-    type["If sample is whole genome, select genome MultiQC<br> If tREX/Exome, select exome MultiQC"]-->
+    type["IF genome, select genome MultiQC<br> IF tREX or Exome, select exome MultiQC"]-->
     multiQC:::linked-->
     report["Generate MultiQC report + run metrics"]:::linked
     
@@ -120,13 +120,71 @@
 </div> <br>
 
 <h2>Targeted R-code Exomes (tREX)</h2>
-<p>This is the targeted pipeline, which processes exome sequencing data. It uses a virtual capture kit to restrict analysis to the specific regions of the exome that contain the genes included in the specified R-code panel. </p>
+<p>This pipeline processes targeted sequencing data. It uses a virtual capture kit to restrict analysis to the specific regions of the exome that contain the genes included in a specified R-code panel. </p>
 
 
     <div class="mermaid">
 
 
     </div>
+
+
+
+<h2>Exome-Genome (EG)</h2>
+<p>This pipeline processes exomes and genomes. Typically, samples are processed in trios (proband and parents), which provides additional useful insights about the inheritance patterns. </p>
+
+    <div class="mermaid">
+
+graph TD
+    Input["Input data"]:::linked--> 
+    
+    findBams["Check if BAMs exist"]-->
+    false["If FALSE:"] --> 
+    countLanes["Count lanes<br> and scatter by them"]:::linked -->
+    ftb["FASTQ to BAM (Sentieon)"]:::linked -->
+    cc["Collect and combine outputs <br> into arrays of files"]
+
+    findBams["Check if BAMs exist"]-->
+    true["If TRUE:"] --> find["Simply find BAMs + BAIs<br> and check FASTQ pairs"]-->
+    cc["Collect and combine outputs <br> into arrays of files"] -->
+    
+    btg["BAM to gVCF (Sentieon)"]:::linked -->
+    bm["BAM metrics"]:::linked -->
+    cov["Find coverage binner"]:::linked 
+
+    bm["BAM metrics"]:::linked -->
+    fff["Find files: <br>BAM, BAI, gVCF, gVCF index"] -->
+
+    gvcft["gVCF typer (Sentieon)"]:::linked-->
+    vf["First round of variant filtration"]:::linked-->
+    disc["VCF discordance"]:::linked -->
+    dc["Depth of coverage"]:::linked -->
+    rl["Relatedness"]:::linked -->
+    hz["Homozygosity"]:::linked -->
+
+    singleton["IF singleton:"] --> skipu["Skip Uniparental Disomy test"] -->
+    xy["XY coverage"]:::linked 
+
+    hz["Homozygosity analysis"]:::linked -->
+    ns["IF duo/trio:"] --> uni["Uniparental Disomy"]:::linked -->
+    xy["XY coverage"]:::linked -->
+
+    an["Annotate SNVs (VEP)"]:::linked -->
+    sc["MEI detection (unused)"]:::linked -->svc["CNV detection (SavvyCNV)"]:::linked
+    
+    cov["Find coverage binner"]:::linked --> 
+    svc["CNV detection (SavvyCNV)"]:::linked -->
+    vp["Run virtual panel"]:::linked -->
+    trio["IF trio: trio analysis"]:::linked -->
+    pp["Postprocessing"]:::linked 
+
+
+
+classDef default fill:#FFF,stroke:#4499bb,stroke-width:2px,color:#000;
+classDef linked fill:#FFF,stroke:#cc6666,stroke-width:2px;
+
+    </div>
+
 
 </body>
 </div>
