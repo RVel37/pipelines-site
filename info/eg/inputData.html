@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../../styling/main.css">     
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EG inputs</title>
+</head>
+<div class="main-content">
+<body>
+
+    <h1>Inputs</h1>
+
+  <p>
+    Inputs include the samples, capture kit, reference genome build, variant annotation sources that will be used in VEP 
+    (such as dbSNP, CADD, ClinVar, etc), and Docker images.
+  </p>
+
+  <p>
+    The input data is put in a predefined format called a <strong>'struct'</strong>, which is a dictionary-like object in Python. 
+    This struct contains the following information:
+  </p>
+
+  <pre><code>struct SampleDetails {
+    String sampleId
+    String sex
+    Boolean proband
+    String status
+    Array[String] flowcellId
+    Array[Array[String]] fastqs
+}</code></pre>
+
+
+    <a href="../../index.html">Back to Flowchart</a>
+</body>
+</div>
+</html>

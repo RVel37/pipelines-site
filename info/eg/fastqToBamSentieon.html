@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../../styling/main.css">     
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILLTHISIN</title>
+</head>
+<div class="main-content">
+<body>
+
+  <h1>FASTQ to BAM (Sentieon)</h1>
+  
+  <p>
+    Paired-end FASTQ files (read 1 and read 2) are converted into a sorted BAM file with an index using Sentieon's accelerated version of BWA-MEM. 
+    <a href="https://bio-bwa.sourceforge.net/" target="_blank">BWA</a> is a widely used package for mapping reads to large reference genomes; 
+    it includes 3 algorithms: MEM, SW, and backtrack. BWA-MEM is the latest and most optimised for longer, high-quality Illumina reads. 
+    It also offers paired-end support.
+  </p>
+
+  <p><strong>Aligner overview:</strong></p>
+  <ol>
+    <li><strong>INDEXING</strong><br>
+      The reference genome is preprocessed into a data structure that allows substrings to be looked up more easily and quickly. 
+      BWA uses an algorithm called Burrows-Wheeler Transform to turn it into a hash table.
+    </li>
+    <li><strong>SEEDING</strong><br>
+      For each read, the aligner extracts short substrings called "seeds" and looks up their positions in the indexed reference 
+      (the hash table) to identify candidate mapping loci. These candidate mapping loci will be strings that roughly match.
+    </li>
+    <li><strong>EXTENSION</strong><br>
+      Each candidate seed is ranked using an algorithm to score for mismatches, gaps, and alignment quality. 
+      Many aligners use some modified version of the Smith-Waterman or Needleman-Wunsch algorithms.
+    </li>
+  </ol>
+
+  <p><strong>BAM/SAM/CRAM</strong> = standard file formats used for storing aligned sequencing reads that have been mapped to a reference genome.</p>
+
+  <p><strong>SAM (Sequence Alignment/Map):</strong> A plain-text, tab-delimited format that stores read alignments, metadata, and information about how each read maps to the reference genome.</p>
+
+  <p><strong>BAM (Binary Alignment/Map):</strong> The compressed, binary version of a SAM file. BAM files are much smaller and faster to process than SAM files, and are widely supported by bioinformatics tools. BAM is the de facto standard for storing aligned sequencing data due to its balance of efficiency, speed, and compatibility.</p>
+
+  <p><strong>CRAM (Compressed Reference-oriented Alignment Map):</strong> A more space-efficient alternative to BAM. Although CRAM files are the most compressed format for storing aligned reads, the reference sequence is required to decompress them. They are also not as universally supported as BAM.</p> 
+
+  <p>The command-line tool suite <code>samtools</code> is often used for operations involving these files. For example, we can convert between SAM and BAM (<code>samtools view -b</code> to create a BAM, and <code>samtools view</code> to inspect a BAM by converting it back to SAM). We can also sort and index BAM files with <code>samtools sort</code> and <code>samtools index</code>.</p>
+
+  <p>More information on Samtools <a href="https://github.com/samtools/hts-specs">here</a>.</p>
+
+
+    <a href="../../index.html">Back to Flowchart</a>
+</body>
+</div>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../../styling/main.css">     
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentieon</title>
+</head>
+<div class="main-content">
+<body>
+
+    <h1>Sentieon overview</h1>
+
+    <p>Sentieon info here.
+        include info on:
+        - what it is (genomics toolkit that reimplements/extends open-source best practices in a more optimised C/C++ framework)
+        - includes reimplementations of:
+            - common aligners e.g. BWA, STAR, Minimap2
+            - germline and somatic SNV/indel calling
+            - picard/gatk QC and metrics, results are identical to GATK best-practice guidelines
+            - CNV pipeline with Broad Institute's CNV calling recommendations incl. panel of normals construction + read depth normalisation. 
+        - Results are bit-identical to the originals but much faster -> excellent for high-throughput alignment
+        Deployment is simplified using single binary docker image that bundles all modules. Sentieon license managed through `SENTIEON_LICENSE` environment variable in our pipelines, which allows us to use the suite. 
+    </p>
+
+    <a href="../../index.html">Back to Flowchart</a>
+</body>
+</div>
+</html>

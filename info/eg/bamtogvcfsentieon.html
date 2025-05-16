@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../../styling/main.css">     
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAM to gVCF</title>
+</head>
+<div class="main-content">
+<body>
+
+    <h1>BAM to gVCF</h1>
+
+    <div>
+  <p>This task takes per-lane sorted BAM files, performs a series of quality control checks and adjustments, and produces gVCFs.</p>
+
+  <h2>BAM Quality Control</h2>
+
+  <p>
+    Quality control and data cleanup is carried out on BAM files prior to variant calling to minimise technical artifacts such as duplicates, biases, and sequencing errors. By doing so, we improve the reliability of variant calls. Steps are summarised in the table below:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>LocusCollector</strong></td>
+        <td>Estimates duplication rates and scoring info used in duplicate marking</td>
+      </tr>
+      <tr>
+        <td><strong>MeanQualityByCycle</strong></td>
+        <td>Tracks average base quality by cycle to detect potential degradation</td>
+      </tr>
+      <tr>
+        <td><strong>QualDistribution</strong></td>
+        <td>Examines the distribution of base qualities</td>
+      </tr>
+      <tr>
+        <td><strong>GCBias</strong></td>
+        <td>Assesses and plots GC bias in sequencing coverage</td>
+      </tr>
+      <tr>
+        <td><strong>AlignmentStat</strong></td>
+        <td>Computes alignment metrics across reads</td>
+      </tr>
+      <tr>
+        <td><strong>InsertSizeMetrics</strong></td>
+        <td>Estimates insert size distribution of read pairs</td>
+      </tr>
+      <tr>
+        <td><strong>Deduplication</strong></td>
+        <td>Removes duplicate reads to reduce bias</td>
+      </tr>
+      <tr>
+        <td style="padding-right: 20px;"><strong>BQSR (Base Quality Score Recalibration)</strong></td>
+        <td>Adjusts systematic errors in base quality scores using known variants</td>
+      </tr>
+      <tr>
+        <td><strong>WgsMetrics / HsMetrics</strong></td>
+        <td>Measures genome/exome-wide sequencing performance (e.g. coverage, depth)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>gVCFs</h3>
+
+  <p>
+    <a href="https://samtools.github.io/hts-specs/VCFv4.5.pdf" target="_blank">VCFs</a> are text-based files that store information on every observed variant (i.e. every deviation from the reference sequence) in tab-delimited columns. Each row represents a potential variant site. VCFs also contain a header section with metadata such as the reference sequence, software used, and creation date. Metadata/header lines all start with two hashes.
+  </p>
+
+  <pre>
+##fileformat=VCFv4.3  
+##fileDate=20240516  
+##INFO=&lt;ID=DP,Number=1,Type=Integer,Description="Raw read depth"&gt;  
+##FORMAT=&lt;ID=GT,Number=1,Type=String,Description="Genotype"&gt;
+#CHROM POS ID REF ALT QUAL FILTER INFO FORMAT sample1
+1 1000 . A T 30 . DP=100 GT:0/1</pre>
+  <br>
+  <p>
+    Genomic VCFs, or <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035531812-GVCF-Genomic-Variant-Call-Format" target="_blank">gVCFs</a>, are a type of VCF that represent every single genomic position, including those that match the reference (as opposed to just the variant sites in a standard VCF). This all-site representation allows for easy merging of files for joint genotyping across family trios (or larger cohorts), which in turn enables accurate detection of inherited vs <em>de novo</em> variants by seeing whether variants in the proband are also present in either parent.
+  </p>
+
+  <p>
+    In Exeter, genomes and exomes are processed in family trios by default, but duo or mono analysis can be used as a fallback if only one parent's data or the proband's data are available.
+  </p>
+
+  <h3>gVCF Creation for Joint Genotyping</h3>
+
+  <p>
+    At this stage of the pipeline, minimal filtering is applied during gVCF creation in order to avoid inadvertently discarding real variants. This means a small portion of these variants may be sequencing errors or low-quality calls, which will be filtered out in later stages.
+  </p>
+
+  <p>
+    It is also important to note that this step, <code>fastqToBamSentieon</code>, only creates individual gVCFs, one per sample. These gVCFs are not yet combined or compared across family members. That occurs in a later stage: the <code>gvcftyperSentieon</code> task, which performs joint genotyping to create a multi-sample family gVCF. Following that, the <code>TrioAnalysis</code> step will perform trio-based variant annotation and interpretation.
+  </p>
+
+  <p>
+    The <a href="../linked/sentieon.html">Sentieon</a> algorithms are identical to GATK's best practices, using the same file formats and parameters, but are significantly more optimised and faster in performance.
+  </p> <br>
+</div>
+
+
+    <a href="../../index.html">Back to Flowchart</a>
+</body>
+</div>
+</html>

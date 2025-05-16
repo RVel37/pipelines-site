@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../../styling/main.css">     
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Count Lanes</title>
+</head>
+<div class="main-content">
+<body>
+
+    <h1>Count Lanes (and scatter by them)</h1>
+
+<p>
+  This task counts how many sequencing lanes are present and checks which lane each FASTQ sample comes from, so that downstream tasks like alignment and variant calling can be scattered (i.e. run in parallel). </p>
+
+<li> A common convention is for the lane number to be indicated in the FASTQ filename or header - e.g. "L001", "L002". This can be extracted and used to separate the data by lane. </li> <br>
+
+<p>
+  <a href="https://support-docs.illumina.com/IN/NextSeq_550-500/Content/IN/NextSeq/FlowCell_Overview_fNS.htm" target="_blank">
+    Illumina flow cells
+  </a> are divided into multiple lanes, which are physically separate channels where the DNA sequencing reactions occur. 
+  The number and type of lanes depend on the flow cell and platform used. At Exeter Genomics Laboratory, we use 25B flow cells which have 8 lanes. This supports throughput of 64 genomes at 30x coverage, 750 exomes at 100x coverage or 1000 transcriptomes.
+</p>
+
+<p>
+  Because the data from different lanes are independent, we can process each lane separately and in parallel. 
+  This scattering approach distributes computational load across multiple nodes, which optimises resource usage and reduces runtime. <br>
+  Also, if a job fails for one lane, we only would need to rerun this rather than the entire batch, saving time and resources.
+</p>
+
+<p>
+  Later, when we convert FASTQ files to BAM format, the resulting BAMs are sorted and grouped by lane, 
+  which maintains this structure for downstream processing.
+</p>
+
+    <a href="../../index.html">Back to Flowchart</a>
+</body>
+</div>
+</html>

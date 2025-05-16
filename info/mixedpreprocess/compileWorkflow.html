@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../styling/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>compileWorkflow</title>
+    <title>Compile Workflow</title>
 </head>
+<div class="main-content">
 <body>
 
     <h1>Compile Workflow</h1>
 
     <p>Compiles workflows in DNAnexus if necessary. This task is run as an <code>if-else</code> loop which will compile the appropriate workflow according to whether the batch is a tREX/Exome/Genome.</p>
     
-    <h2>Check for Existing Workflow</h2>
+    <h3>Check for Existing Workflow</h3>
     <p>Check if a compiled workflow already exists. If so, it compares it to the latest GitHub release to decide whether a re-compilation is needed.</p>
     
-    <h2>Outputs</h2>
+    <h3>Outputs</h3>
     <p>The task outputs the workflow tag (GitHub tag used for compilation), workflow ID (a unique ID in DNAnexus), and the workflow template (JSON file).</p>
     
     <p>Workflows are compiled for Exome, tREX, or Genome based on the specified capture type (which will have been pulled from the <code>checkProject</code> task). For genomes, the capture type is set to <code>"genome"</code>, indicating that no capture kit is needed as the analysis covers the entire genome.</p>
     
     <p>The task removes all old files from the previous batch's workflow in an archived section on DNAnexus, moves current files to the archive (instead of deleting them, in case a pipeline is still running), and uploads new files to DNAnexus directly from git.</p>
     
-    <h1>Update Sample Details</h1>
+    <h3>Update Sample Details</h3>
     <p>Updates a file on DNAnexus called <code>sample_details.tsv</code> by merging the new info from <code>sampleInfo.tsv</code>, ensuring it is up to date.</p>
     
-    <a href="../index.html">Back to Flowchart</a>
+    <a href="../../index.html">Back to Flowchart</a>
 </body>
 </html>
